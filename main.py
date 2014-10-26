@@ -1,38 +1,64 @@
 from kivy.app import App
-import kivy.properties
+from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty
 from kivy.graphics import *
 from kivy.uix.widget import Widget
-from kivy.uix.widget import Label
 from kivy.uix.button import Button
 from kivy.clock import Clock
 import random
-import webcolors
+from webcolors import name_to_rgb_percent
 
 class ButtonGame():
-    #Initial Conditions
-    color_array = ["red", "orange", "yellow", "green", "blue", "purple"]
-    colorTrue = 0
-    wins = 0
-    word_color = ["", ""]
-    random.seed()
+    pass
 
+class duringGame(BoxLayout):
+    def beginGame():
+        #Initial Conditions
+        self.canvas.clear()
+        color_array = ["red", "yellow", "green", "blue"]
+        colorTrue = 0
+        word_color = ["", ""]
+        random.seed()
+        setTask()
+    
     #Each round
     def setTask():
+        wins = NumericProperty(0)
         colorTrue = random.randint(0,1)
-        word_color[0] = color_array[random.randint(0,5)]
-        word_color[1] = color_array[random.randint(0,5)]
+        word_color[0] = color_array[random.randint(0,3)]
+        word_color[1] = color_array[random.randint(0,3)]
+        word_rgb_pctt = name_to_rgb_percent(word_color[1])
+
+        #Task Label Initialize
+        task_colorR = NumericProperty(word_rgb_pct[0])
+        task_colorG = NumericProperty(word_rgb_pct[1])
+        task_colorB = NumericProperty(word_rgb_pct[2])
+        task_color = ReferenceListProperty(task_colorR, task_colorG, task_colorB)
+        task_word = word_color[0]
     
-        button1 = Button(text= color_array[0], font_size=14)
-        button1.bind(on_press = checkButtons(0))
-        with button1.canvas:
-            color_triplet = name_to_rgb_percent(color_array[0])
-            Color(color_triplet[0], color_triplet[1], color_triplet[2])
-            Rectangle(pos = (10,10), size= (50,50))
-        button2 = Button(text= color_array[1], font_size=14)
-        button3 = Button(text= color_array[2], font_size=14)
-        button4 = Button(text= color_array[3], font_size=14)
-        button5 = Button(text= color_array[4], font_size=14)
-        button6 = Button(text= color_array[5], font_size=14)
+        #button color initialization
+        button1 = ObjectProperty(None)
+        button1_colorR = NumericProperty(1.0)
+        button1_colorG = NumericProperty(0)
+        button1_colorB = NumericProperty(0)
+        button1_color = ReferenceListProperty(button1_colorR, button1_colorG, button1_colorB)
+
+        button2 = ObjectProperty(None)
+        button2_colorR = NumericProperty(0.55)
+        button2_colorG = NumericProperty(0.55)
+        button2_colorB = NumericProperty(0)
+        button2_color = ReferenceListProperty(button2_colorR, button2_colorG, button2_colorB)
+
+        button3 = ObjectProperty(None)
+        button3_colorR = NumericProperty(0)
+        button3_colorG = NumericProperty(1.0)
+        button3_colorB = NumericProperty(0)
+        button3_color = ReferenceListProperty(button3_colorR, button3_colorG, button3_colorB)
+
+        button4 = ObjectProperty(None)
+        button4_colorR = NumericProperty(0)
+        button4_colorG = NumericProperty(0)
+        button4_colorB = NumericProperty(1.0)
+        button4_color = ReferenceListProperty(button4_colorR, button4_colorG, button4_colorB)
 
     def checkButtons(button_press):
         if word_color[colorTrue]== color_array[button_press]:
@@ -42,33 +68,24 @@ class ButtonGame():
 
     def checkScore(success):
         if success:
-            wins++
+            self.wins += 1
             setTask()
         else:
             Lose()
 
     def Lose():
         self.canvas.clear()
-        score_message = "You lost \n Total Score: %d \n Play again?" % wins
-        end_message = Label(text = score_message, font_size=20)
-        yes_button = Button(text = "Yes", font_size=14)
-        yes_button.bind(onpress = Restart())
-        with yes_button.canvas:
-            Color(0.0, 1.0,0.0)
-            Rectangle(pos = (10,10), size=(50,50))
-        no_button = Button(text = "No", font_size = 14)
-        with no_button.canvas:
-            Color(0.0, 1.0, 0.0)
-            Rectangle((70, 10), size = (50,50))
+        score_message = "You lost \n Total Score: %d" % wins
 
     def Restart():
-        wins = 0
+        wins = NumericProperty(0)
         setTask()
 
 class ButtonApp(App):
     def build(self):
         game = ButtonGame()
-        Clock.schedule_interval(game.update, 1.0/60.0)
+        game.start()
+        #Clock.schedule_interval(game.update, 1.0/60.0) Intend to set time limit later
         return game
 
 if __name__ == '__main__':
