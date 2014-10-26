@@ -2,6 +2,7 @@ from kivy.app import App
 import kivy.properties
 from kivy.graphics import *
 from kivy.uix.widget import Widget
+from kivy.uix.widget import Label
 from kivy.uix.button import Button
 from kivy.clock import Clock
 import random
@@ -44,9 +45,27 @@ class ButtonGame():
             wins++
             setTask()
         else:
-            self.canvas.clear()
+            Lose()
 
- class ButtonApp(App):
+    def Lose():
+        self.canvas.clear()
+        score_message = "You lost \n Total Score: %d \n Play again?" % wins
+        end_message = Label(text = score_message, font_size=20)
+        yes_button = Button(text = "Yes", font_size=14)
+        yes_button.bind(onpress = Restart())
+        with yes_button.canvas:
+            Color(0.0, 1.0,0.0)
+            Rectangle(pos = (10,10), size=(50,50))
+        no_button = Button(text = "No", font_size = 14)
+        with no_button.canvas:
+            Color(0.0, 1.0, 0.0)
+            Rectangle((70, 10), size = (50,50))
+
+    def Restart():
+        wins = 0
+        setTask()
+
+class ButtonApp(App):
     def build(self):
         game = ButtonGame()
         Clock.schedule_interval(game.update, 1.0/60.0)
