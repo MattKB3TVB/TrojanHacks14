@@ -3,9 +3,84 @@
 ButtonGame:
 
 <ButtonGame>:
+    canvas:
+        Color:
+            rgb: 1.0, 1.0, 1.0, 1.0
+        Rectangle:
+            pos: self.center_x, 0
+            size: 10, self.height
+
+        Label:
+            font_size: 70
+            center_x: root.width/2
+            top: root.top - 50
+            rgb: 1.0, 0.0, 0.0
+            text: "Rage Buttons"
+
+        Button:
+            rgb: 0.0, 1.0, 0.0
+            height: '80dp'
+            text: "Start"
+            on_press: duringGame().beginGame()
+
+<duringGame@BoxLayout>:
+    button1: button1
+    button2: button2
+    button3: button3
+    button4: button4
+    orientation: 'vertical'
+    FloatLayout:
+        Label:
+            font_size: 40
+            text: 'Score:' + str(root.wins)
+            size: 40, 40
+            pos: 0, self.top - self.height /2 - 20
+            color: 0.0, 0.0, 0.0, 1.0
+
+        Label:
+            font_size: 32
+            text: self.task_word
+            color: self.task_colorR, self.task_colorG, self.task_colorB
+            size: 100, 100
+            pos: root.center_x - self.width/2, root.center_y - self.height /2 + 10
+            
+    BoxLayout:
+        Button:
+            id: button1
+            background_color: self.button1_colorR, self.button1_colorG, self.button1_colorB, 1
+            size_hint_y: None
+	    height: '80dp'
+	    text: ""
+	    on_press: self.checkButtons(0)
+
+        Button:
+            id: button2
+            background_color: self.button2_colorR, self.button2_colorG, self.button2_colorB, 1
+	    size_hint_y: None
+	    height: '80dp'
+	    text: ""
+	    on_press: self.checkButtons(1)
+
+        Button:
+            id: button3
+            background_color: self.button3_colorR, self.button3_colorG, self.button3_colorB, 1
+	    size_hint_y: None
+            height: '80dp'
+            text: ""
+	    on_press: self.checkButtons(2)
+
+	Button:
+            id: button4
+            background_color: self.button4_colorR, self.button4_colorG, self.button4_colorB, 1
+	    size_hint_y: None
+	    height: '80dp'
+	    text: ""
+	    on_press: self.checkButtons(3)
+            
+<endGame>:
         canvas:
             Color:
-                rgb: 1.0, 1.0, 1.0
+                rgb: 1.0, 1.0, 1.0, 1.0
             Rectangle:
                 pos: self.center_x, 0
                 size: 10, self.height
@@ -15,30 +90,10 @@ ButtonGame:
                 center_x: root.width/2
                 top: root.top - 50
                 rgb: 1.0, 0.0, 0.0
-                text: "Rage Buttons"
+                text: self.score_message
 
             Button:
                 rgb: 0.0, 1.0, 0.0
-                pos = self.center_x, self.center_y - 40
-                text: "Start"
-                on_press: beginGame()
-
-duringGame:
-
-<duringGame@BoxLayout>:
-    orientation = 'horizontal'
-    FloatLayout:
-        Label:
-            font_size: 40
-            text: 'Score:' + str(root.wins)
-            size: 40, 40
-            pos: 0, root.top - self.height /2 - 20
-            color: 0.0, 0.0, 0.0
-
-        Label:
-            font_size: 32
-            text: root.
-            
-
-
-        
+                height: '80dp'
+                text: "Replay"
+                on_release: duringGame().beginGame()
