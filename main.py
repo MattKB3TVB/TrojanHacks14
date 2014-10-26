@@ -1,6 +1,8 @@
 from kivy.app import App
 from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty
 from kivy.graphics import *
+from kivy.uix.boxlayout import BoxLayout
+from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.clock import Clock
@@ -71,15 +73,12 @@ class duringGame(BoxLayout):
             self.wins += 1
             setTask()
         else:
-            Lose()
+            endGame().Lose(self.wins)
 
-    def Lose():
+class endGame(Widget):
+    def Lose(wins):
         self.canvas.clear()
         score_message = "You lost \n Total Score: %d" % wins
-
-    def Restart():
-        wins = NumericProperty(0)
-        setTask()
 
 class ButtonApp(App):
     def build(self):
@@ -90,3 +89,4 @@ class ButtonApp(App):
 
 if __name__ == '__main__':
     ButtonApp().run()
+
